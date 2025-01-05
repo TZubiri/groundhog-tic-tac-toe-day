@@ -7,10 +7,12 @@ def render_board(board):
 board = '_________'
 print(render_board(board))
 
-while True:
+while AI1.winner(board)=='':
     i = int(input('your move:'))
     board = AI1.make_move(board,i)
     print(render_board(board))
     board = AI1.play_1(board)
     print('ai\'s move:')
     print(render_board(board))
+
+print("winner is: "+ AI1.winner(board))
