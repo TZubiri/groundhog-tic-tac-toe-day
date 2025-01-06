@@ -7,6 +7,13 @@ def play_1(board):
     board_after_move = make_move(board,chosen_move)
     return board_after_move
 
+import random
+def play_2(board):
+    moves = legal_moves(board)
+    chosen_move = moves[random.randrange(len(moves))]
+    board_after_move = make_move(board,chosen_move)
+    return board_after_move
+
 def legal_moves(board):
     legal_moves = []
     for i,square in enumerate(board):
