@@ -14,6 +14,7 @@ def play_2(board):
 	board_after_move = make_move(board,chosen_move)
 	return board_after_move
 
+
 def legal_moves(board):
 	legal_moves = []
 	for i,square in enumerate(board):
@@ -47,3 +48,9 @@ def winner(board):
 	#return 'X'
 	#return 'Y'
 	#return ''
+def play_3(board):
+	moves = legal_moves(board)
+	for move in moves:
+		if winner(newboard:=make_move(board,move)):
+			return newboard
+	return play_2(board)

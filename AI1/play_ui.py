@@ -40,6 +40,8 @@ if v == "1" or v =="default":
 	AI = AI1.play_1
 elif v == "2" or v=="bobo" or v=="random":
 	AI = AI1.play_2
+elif v == "3" or v=="1ply" or v=="1-ply":
+	AI = AI1.play_3
 elif v == "0" or v=="none" or v=="" or v=="me" or v=="human":
 	AI = human_move
 else:
