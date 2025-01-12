@@ -44,6 +44,8 @@ elif v == "3" or v=="1ply" or v=="1-ply":
 	AI = AI1.play_3 #try to win
 elif v == "4" or v=="1ply+" or v=="1-ply+":
 	AI = AI1.play_4 #try to win, don't lose
+elif v == "5" or v=="bruteforce" or v=="enumerateall":
+	AI = AI1.play_5b
 elif v == "0" or v=="none" or v=="" or v=="me" or v=="human":
 	AI = human_move
 else:
@@ -58,14 +60,11 @@ board = '_________'
 p1 = human_move
 p2 = AI
 
-turn = "O"
+player = p1
 while AI1.winner(board)=='':
-	if turn =="O":
-		print("p1 turn")
-		board=p1(board)
-	elif turn =="X":
-		board= p2(board)
-	turn = "O" if turn == "X" else "X"
+	print("asd")
+	board=player(board)
+	player = p1 if player == p2 else p2
 
 
 

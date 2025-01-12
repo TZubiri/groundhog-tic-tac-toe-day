@@ -46,10 +46,13 @@ def winner(board):
 	for line in lines:
 		if board[line[0]]!= '_' and board[line[0]] == board[line[1]] == board[line[2]]:
 			return board[line[0]]
+	if tie(board):
+		return 'tie'
 	return ''
 	#return 'X'
-	#return 'Y'
+	#return 'O'
 	#return ''
+
 def play_3(board):
 	moves = legal_moves(board)
 	for move in moves:
@@ -73,3 +76,53 @@ def play_4(board):
 	return play_2(board)
 
 
+def tie(board):
+	if board.count("_") == 0:
+		return True
+	else:
+		return False
+	#return True if board.count(board) == 0 else False
+
+def play_5(board):
+	ties = [] # would rather define this in-loop, can do for single var, but not for lists I don't think
+	their_ties = []
+	for move in legal_moves(board):
+		newboard=make_move(board,move)
+		if winner(newboard:=make_move(board,move)): #if we can win the game
+			return newboard #win it
+		elif tie(newboard): #if we can tie it
+			ties.append(newboard) #save option for later
+		else:	#else if the game is still undefined
+			board3 = play_5(newboard)  #assume opponent would play like us.
+			if winner(board3): #if opponent can win
+				continue # discard our move
+			elif tie(board3): #if opponent can tie
+				their_ties.append(newboard) #save this move for later under the ones they can tie, 
+							  #this distinction is valuable since we may prioritize situations
+							  #where we force a tie if opponent can force our loss
+							  #otherwise if they can tie a game, but they can also blunder, we would rather not take the early tie.
+				continue  #continue search anyways
+			else:
+				return newboard  #if we can't force a win or a tie, and neither can opponent
+	if ties:
+		return ties[0] #if no ties, admit defeat.
+	else:
+		raise Exception ("I forfeit")
+
+def play_5b(board): #->gamestate
+	moves = legal_moves(board) #at the end of the day, we want to chose one of these
+	for move in moves:
+		if winner(newboard:=make_move(board,move)) or tie(newboard): #if we can win the game or tie it
+			return newboard #do it
+	goodmoves = []
+	for move in moves:
+		newboard = make_move(board,move)
+		board3= play_5b(newboard)
+		if board3 is None:
+			return make_move(board,move)
+		if winner(board3):
+			continue
+		goodmoves.append(move)
+	if len(goodmoves) ==0:
+		return None # Reduce good moves until zero or one, if more, choose 1 at random.
+	return make_move(board,goodmoves[0])
