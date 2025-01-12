@@ -34,9 +34,11 @@ def turn(board):
 	else:
 		raise Exception("Ilegal board state")
 
-def make_move(board,square):
+def make_move(board,square,piece = None):
+	if piece== None:
+		piece= turn(board)
 	# this is actually just board[square] = turn(board)
-	board = board[:square] + turn(board) + board[square+1:]
+	board = board[:square] + piece + board[square+1:]
 	return board
 
 def winner(board):
@@ -54,3 +56,20 @@ def play_3(board):
 		if winner(newboard:=make_move(board,move)):
 			return newboard
 	return play_2(board)
+
+def play_4(board):
+	moves = legal_moves(board)
+	turn_piece = turn(board)
+	other_turn_piece = "o" if turn_piece == "x" else "x"
+	print("piece, other turn piece",turn_piece,other_turn_piece)
+	for move in moves:
+		if winner(newboard:=make_move(board,move,turn_piece)):
+			return newboard
+	print("no winning move found")
+	for move in moves:
+		if winner(make_move(board,move,other_turn_piece)):
+			return make_move(board,move,turn_piece)
+	print("no immediate risk found")
+	return play_2(board)
+
+

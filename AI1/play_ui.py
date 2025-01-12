@@ -37,11 +37,13 @@ def human_move(board):
 
 
 if v == "1" or v =="default":
-	AI = AI1.play_1
+	AI = AI1.play_1 #first legal move left to right top down
 elif v == "2" or v=="bobo" or v=="random":
-	AI = AI1.play_2
+	AI = AI1.play_2 #random
 elif v == "3" or v=="1ply" or v=="1-ply":
-	AI = AI1.play_3
+	AI = AI1.play_3 #try to win
+elif v == "4" or v=="1ply+" or v=="1-ply+":
+	AI = AI1.play_4 #try to win, don't lose
 elif v == "0" or v=="none" or v=="" or v=="me" or v=="human":
 	AI = human_move
 else:
