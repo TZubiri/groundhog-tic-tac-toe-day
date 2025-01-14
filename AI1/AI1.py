@@ -176,3 +176,10 @@ def play_6(board0):
 
 
 #got to 3 half turns.
+def play_8(board):
+	if board.count("_")==9:
+		return make_move(board,4)
+	elif board=="____o____":
+		return make_move(board,0)
+	else:
+		return play_4(board)
