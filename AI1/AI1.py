@@ -173,6 +173,16 @@ def play_6(board0):
 			return make_move(board0,move1)
 		else:
 			return play_1(board0)
-
-
 #got to 3 half turns.
+
+#let's try a recursive approach, with more io data flow on the signature,
+#and let's split the API compliant function with the recursive callable.
+ 
+def play_7(board):
+	#initialize other parameters
+	board,theta = __play_7(board,theta)
+	#convert to api compliant if necessary
+	return board
+
+def __play_7(board,theta): #->board,theta
+	
