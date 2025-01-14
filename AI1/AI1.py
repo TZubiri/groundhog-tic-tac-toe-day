@@ -135,29 +135,44 @@ def play_5b(board): #->gamestate
 #as well as our next turn and our opponent's next next turn.
 #for these purposes one play is a pair of turns
 def play_6(board0):
-	possible_moves =[]
+	possible_moves1 =[]
 	moves1 = legal_moves(board0)
-	for move1 in moves1:
+	for i1,move1 in enumerate(moves1):
 		board1 = make_move(board0,move1)
 		if winner(board1):
+			print("immediate win found")
 			return board1
-		for move2 in legal_moves(board1):
+		possible_moves2=[]
+		moves2=legal_moves(board1)
+		for i2,move2 in enumerate(moves2):
 			board2= make_move(board1,move2)
 			if winner(board2):
 				opponent_wins =True
 				break
-			for move3 in legal_moves(board2):
+			possible_moves3=[]
+			moves3=legal_moves(board2)
+			for i3,move3 in enumerate(moves3):
 				board3= make_move(board2,move3)
 				if winner(board3):
 					player_wins =True
 					break
+				possible_moves3.append(move3)
 			if locals().get("player_wins") ==True:
 				player_wins == False
 				continue
+			possible_moves2.append(move2)
+		possible_moves1.append(move1)
+		'''
 		if locals().get("opponent_wins") == True:
 			opponent_wins = False
 			continue
 		else:
 			pass
-	return play_2(board)
+		'''
+		if len(possible_moves2)==0:
+			return make_move(board0,move1)
+		else:
+			return play_1(board0)
+
+
 #got to 3 half turns.
