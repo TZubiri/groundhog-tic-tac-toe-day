@@ -126,3 +126,38 @@ def play_5b(board): #->gamestate
 	if len(goodmoves) ==0:
 		return None # Reduce good moves until zero or one, if more, choose 1 at random.
 	return make_move(board,goodmoves[0])
+
+
+#2ply then random
+#specs:
+#without using recursion or a main loop
+#evaluate whether we win or opponent can win in the current turn, the next (opponet's turn),
+#as well as our next turn and our opponent's next next turn.
+#for these purposes one play is a pair of turns
+def play_6(board0):
+	possible_moves =[]
+	moves1 = legal_moves(board0)
+	for move1 in moves1:
+		board1 = make_move(board0,move1)
+		if winner(board1):
+			return board1
+		for move2 in legal_moves(board1):
+			board2= make_move(board1,move2)
+			if winner(board2):
+				opponent_wins =True
+				break
+			for move3 in legal_moves(board2):
+				board3= make_move(board2,move3)
+				if winner(board3):
+					player_wins =True
+					break
+			if locals().get("player_wins") ==True:
+				player_wins == False
+				continue
+		if locals().get("opponent_wins") == True:
+			opponent_wins = False
+			continue
+		else:
+			pass
+	return play_2(board)
+#got to 3 half turns.
