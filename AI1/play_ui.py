@@ -48,6 +48,8 @@ elif v == "5" or v=="bruteforce" or v=="enumerateall":
 	AI = AI1.play_5b
 elif v== "8" or v=="1ply++":
 	AI = AI1.play_8
+elif v== "9" or v=="1ply+++":
+	AI = AI1.play_9
 elif v == "0" or v=="none" or v=="" or v=="me" or v=="human":
 	AI = human_move
 else:

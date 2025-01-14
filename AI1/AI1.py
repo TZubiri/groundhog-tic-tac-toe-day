@@ -176,6 +176,8 @@ def play_6(board0):
 
 
 #got to 3 half turns.
+
+
 def play_8(board):
 	if board.count("_")==9:
 		return make_move(board,4)
@@ -183,3 +185,24 @@ def play_8(board):
 		return make_move(board,0)
 	else:
 		return play_4(board)
+
+def play_9(board):
+	moves = legal_moves(board)
+	turn_piece = turn(board)
+	other_turn_piece = "o" if turn_piece == "x" else "x"
+	print("piece, other turn piece",turn_piece,other_turn_piece)
+	for move in moves:
+		if winner(newboard:=make_move(board,move,turn_piece)):
+			return newboard
+	print("no winning move found")
+	for move in moves:
+		if winner(make_move(board,move,other_turn_piece)):
+			return make_move(board,move,turn_piece)
+	print("no immediate risk found")
+
+	if board[4]=="_":
+		return make_move(board,4)
+	for corner in [0,2,6,8]:
+		if board[corner] == "_":
+			return make_move(board,corner)
+	return play_2(board)
