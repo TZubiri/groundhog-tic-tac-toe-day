@@ -58,10 +58,10 @@ class echo(socketserver.BaseRequestHandler):
 		inp = self.request.recv(17) #longest and typical request is "GET /b_________1 " 17 chars with the final space
 		print(inp)
 		if inp[0] != b"G"[0] and inp[3] != b" "[0]:
-			self.request.sendall("HTTP1.0 405\r\n".encode("ASCII"))
+			self.request.sendall("HTTP1.1 405\r\n".encode("ASCII"))
 
 		def send404(self):
-			self.request.sendall("HTTP1.0 404\r\n".encode("ASCII"))
+			self.request.sendall("HTTP1.1 404\r\n".encode("ASCII"))
 
 		if inp[4]!=b"/"[0]:
 			send404(self)
@@ -70,16 +70,17 @@ class echo(socketserver.BaseRequestHandler):
 			send404(self)
 		path = inp[4:4+space2i]
 		
-		def sendfile(self,bytes):
+		def sendfile(self,bytes,cache=False):
+			controlcache = b"\r\nControl-Cache: max-age=604800" if cache==True else b""
 			l = len(bytes)
-			self.request.sendall(b"HTTP1.0 200 \r\nContent-Length:"+str(l).encode("ASCII")+b"\r\n\r\n"+bytes)
+			self.request.sendall(b"HTTP1.1 200 \r\nContent-Length:"+str(l).encode("ASCII")+controlcache+b"\r\n\r\n"+bytes)
 		print(path)
 		if path == b"/webui.css":
 			sendfile(self,css)
 		elif path == b"/o.bmp":
-			sendfile(self,oimg)
+			sendfile(self,oimg,cache=True)
 		elif path == b"/x.bmp":
-			sendfile(self,ximg)
+			sendfile(self,ximg,cache=True)
 		elif path == b"/" or path == b"index" or path == b"/index.html":
 			sendfile(self,boardhtml("_________").encode("ASCII"))
 
@@ -94,7 +95,7 @@ class echo(socketserver.BaseRequestHandler):
 			send404(self)
 		self.request.close()
 
-server_address = ('127.0.0.1',8002)
+server_address = ('127.0.0.1',8003)
 httpd = socketserver.TCPServer(server_address,echo)
 httpd.serve_forever()
 
