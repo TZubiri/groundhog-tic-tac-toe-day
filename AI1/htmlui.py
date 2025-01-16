@@ -1,8 +1,9 @@
 import socketserver
+import AI1
 
 board = "x___o____"
 
-def boardhtml(board,history):
+def boardhtml(board):
 	sq = "<div style='width:30%;height:30%;border:solid'></div>"
 	htmlpre=  "<html><head>"+\
 		"<link rel='stylesheet' href='webui.css'</link>"+\
@@ -16,7 +17,7 @@ def boardhtml(board,history):
 	x = "<img class='x' src='x.bmp'></img>"
 	o = "<img class='o' src='o.bmp'></img>"
 
-	sq_template = lambda history,sqid,content: "<a href=b"+history+sqid+" class='my-sq'>"+content+"</a>"
+	sq_template = lambda board,sqid,content: "<a href=b"+board+sqid+" class='my-sq'>"+content+"</a>"
 
 	inner = ""
 	i=0
@@ -29,7 +30,7 @@ def boardhtml(board,history):
 			content = o
 		else:
 			content = ""
-		inner+=sq_template(history,str(i),content)
+		inner+=sq_template(board,str(i),content)
 		if i%3==2:
 			inner+="</my-lin>"
 		i+=1
@@ -54,7 +55,7 @@ f.close()
 
 class echo(socketserver.BaseRequestHandler):
 	def handle(self):
-		inp = self.request.recv(16) #longest relevant request is "GET /0123456789", we get an extra character for posts, or a final separator
+		inp = self.request.recv(17) #longest and typical request is "GET /b_________1 " 17 chars with the final space
 		print(inp)
 		if inp[0] != b"G"[0] and inp[3] != b" "[0]:
 			self.request.sendall("HTTP1.0 405\r\n".encode("ASCII"))
@@ -79,20 +80,21 @@ class echo(socketserver.BaseRequestHandler):
 			sendfile(self,oimg)
 		elif path == b"/x.bmp":
 			sendfile(self,ximg)
-		elif path == b"/" or path[0:2] == b"/b" or path == b"/index" or path == b"/index.html":
-			nboard = ["_"]*9
-			turn = True
-			for move in path[2:].decode("ASCII"):
-				i = int(move)
-				nboard[i]= "o" if turn else "x"
-				turn = not turn
-			board = "".join(nboard)
-			sendfile(self,boardhtml(board,path[2:].decode("ASCII")).encode("ASCII"))
+		elif path == b"/" or path == b"index" or path == b"/index.html":
+			sendfile(self,boardhtml("_________").encode("ASCII"))
+
+		elif path[:2] == b"/b":
+			sboard = path[2:-1].decode("ASCII")
+			smove = path.decode("ASCII")[-1]
+			sboard = AI1.make_move(sboard,int(smove))
+			sboard = AI1.play_9(sboard)
+			sendfile(self,boardhtml(sboard).encode("ASCII"))
+
 		else:
 			send404(self)
 		self.request.close()
 
-server_address = ('127.0.0.1',8000)
+server_address = ('127.0.0.1',8002)
 httpd = socketserver.TCPServer(server_address,echo)
 httpd.serve_forever()
 
