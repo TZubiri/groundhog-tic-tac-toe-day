@@ -30,7 +30,7 @@ for square in board:
 	inner+=sq_template(str(i),content)
 	if i%3==2:
 		inner+="</my-lin>"
-
+	i+=1
 finalhtml = htmlpre+inner+htmlpost
 
 
@@ -63,7 +63,9 @@ class echo(socketserver.BaseRequestHandler):
 
 		if inp[4]!=b"/"[0]:
 			send404(self)
-		space2i = inp[4:].index(b" ")
+		space2i = inp[4:].find(b" ")
+		if space2i == -1:
+			send404(self)
 		path = inp[4:4+space2i]
 		
 		def sendfile(self,bytes):
