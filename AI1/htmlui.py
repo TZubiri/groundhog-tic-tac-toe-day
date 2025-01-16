@@ -2,9 +2,13 @@ import socketserver
 
 board = "x___o____"
 
-def boardhtml(board):
+def boardhtml(board,history):
 	sq = "<div style='width:30%;height:30%;border:solid'></div>"
-	htmlpre=  "<html><head><link rel='stylesheet' href='webui.css'</link></head><body><ttt>"
+	htmlpre=  "<html><head>"+\
+		"<link rel='stylesheet' href='webui.css'</link>"+\
+		"<link rel='preload' href='x.bmp' as='image'>"\
+		"<link rel='preload' href='o.bmp' as='image'>"\
+		"</head><body><ttt>"
 	htmlpost= "</ttt></body></html>"
 	linepre= "<my-lin>"
 	linepost= "</my-lin>"
@@ -12,7 +16,7 @@ def boardhtml(board):
 	x = "<img class='x' src='x.bmp'></img>"
 	o = "<img class='o' src='o.bmp'></img>"
 
-	sq_template = lambda sqid,content: "<a href="+sqid+" class='my-sq'>"+content+"</a>"
+	sq_template = lambda history,sqid,content: "<a href=b"+history+sqid+" class='my-sq'>"+content+"</a>"
 
 	inner = ""
 	i=0
@@ -25,7 +29,7 @@ def boardhtml(board):
 			content = o
 		else:
 			content = ""
-		inner+=sq_template(str(i),content)
+		inner+=sq_template(history,str(i),content)
 		if i%3==2:
 			inner+="</my-lin>"
 		i+=1
@@ -83,12 +87,12 @@ class echo(socketserver.BaseRequestHandler):
 				nboard[i]= "o" if turn else "x"
 				turn = not turn
 			board = "".join(nboard)
-			sendfile(self,boardhtml(board).encode("ASCII"))
+			sendfile(self,boardhtml(board,path[2:].decode("ASCII")).encode("ASCII"))
 		else:
 			send404(self)
 		self.request.close()
 
-server_address = ('127.0.0.1',8001)
+server_address = ('127.0.0.1',8000)
 httpd = socketserver.TCPServer(server_address,echo)
 httpd.serve_forever()
 
