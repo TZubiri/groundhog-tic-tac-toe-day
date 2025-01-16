@@ -81,7 +81,7 @@ class echo(socketserver.BaseRequestHandler):
 			for move in path[2:].decode("ASCII"):
 				i = int(move)
 				nboard[i]= "o" if turn else "x"
-				
+				turn = not turn
 			board = "".join(nboard)
 			sendfile(self,boardhtml(board).encode("ASCII"))
 		else:
