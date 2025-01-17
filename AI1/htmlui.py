@@ -88,7 +88,28 @@ class echo(socketserver.BaseRequestHandler):
 			sboard = path[2:-1].decode("ASCII")
 			smove = path.decode("ASCII")[-1]
 			sboard = AI1.make_move(sboard,int(smove))
+			result = AI1.winner(sboard)
+			if result == "o":
+				sendfile(self,b"<html><p>O wins.</p></html>")
+				return
+			elif result == "x":
+				sendfile(self,b"<html><p>X wins.</p></html>")
+				return
+			elif result == "tie":
+				sendfile(self,b"<html><p>Tie</p></html>")
+				return
 			sboard = AI1.play_9(sboard)
+			result = AI1.winner(sboard)
+			if result == "o":
+				sendfile(self,b"<html><p>O wins.</p></html>")
+				return
+			elif result == "x":
+				sendfile(self,b"<html><p>X wins.</p></html>")
+				return
+			elif result == "tie":
+				sendfile(self,b"<html><p>Tie</p></html>")
+				return
+
 			sendfile(self,boardhtml(sboard).encode("ASCII"))
 
 		else:
