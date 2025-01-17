@@ -4,12 +4,8 @@ import AI1
 board = "x___o____"
 
 def boardhtml(board):
+	result = AI1.winner(board)
 	sq = "<div style='width:30%;height:30%;border:solid'></div>"
-	htmlpre=  "<html><head>"+\
-		"<link rel='stylesheet' href='webui.css'</link>"+\
-		"<link rel='preload' href='x.bmp' as='image'>"\
-		"<link rel='preload' href='o.bmp' as='image'>"\
-		"</head><body><ttt>"
 	htmlpost= "</ttt></body></html>"
 	linepre= "<my-lin>"
 	linepost= "</my-lin>"
@@ -17,7 +13,32 @@ def boardhtml(board):
 	x = "<img class='x' src='x.bmp'></img>"
 	o = "<img class='o' src='o.bmp'></img>"
 
-	sq_template = lambda board,sqid,content: "<a href=b"+board+sqid+" class='my-sq'>"+content+"</a>"
+	if result == "o":
+		resulthtml = "<p style='size:32'>O wins</p>"
+	elif result == "x":
+		resulthtml = "<p style='size:32'>X wins</p>"
+	elif result == "tie":
+		resulthtml = "<p style='size:32'>TIE!</p>"
+	else:
+		resulthtml = ""
+
+	if result == "":
+		disabled = False
+	else:
+		disabled = True
+
+	htmlpre=  "<html><head>"+\
+		"<link rel='stylesheet' href='webui.css'</link>"+\
+		"<link rel='preload' href='x.bmp' as='image'>"\
+		"<link rel='preload' href='o.bmp' as='image'>"\
+		"</head><body>"+resulthtml+"<ttt>"
+
+	def sq_template(board,sqid,content,disabled):
+		if disabled:
+			href =''
+		else:
+			href=" href='b"+board+sqid+"'"
+		return "<a"+href+" class='my-sq'>"+content+"</a>"
 
 	inner = ""
 	i=0
@@ -30,7 +51,7 @@ def boardhtml(board):
 			content = o
 		else:
 			content = ""
-		inner+=sq_template(board,str(i),content)
+		inner+=sq_template(board,str(i),content,disabled)
 		if i%3==2:
 			inner+="</my-lin>"
 		i+=1
@@ -74,6 +95,7 @@ class echo(socketserver.BaseRequestHandler):
 			controlcache = b"\r\nControl-Cache: max-age=604800" if cache==True else b""
 			l = len(bytes)
 			self.request.sendall(b"HTTP1.1 200 \r\nContent-Length:"+str(l).encode("ASCII")+controlcache+b"\r\n\r\n"+bytes)
+			self.request.close()
 		print(path)
 		if path == b"/webui.css":
 			sendfile(self,css)
@@ -88,35 +110,18 @@ class echo(socketserver.BaseRequestHandler):
 			sboard = path[2:-1].decode("ASCII")
 			smove = path.decode("ASCII")[-1]
 			sboard = AI1.make_move(sboard,int(smove))
-			result = AI1.winner(sboard)
-			if result == "o":
-				sendfile(self,b"<html><p>O wins.</p></html>")
-				return
-			elif result == "x":
-				sendfile(self,b"<html><p>X wins.</p></html>")
-				return
-			elif result == "tie":
-				sendfile(self,b"<html><p>Tie</p></html>")
+			if AI1.winner(sboard):
+				sendfile(self,boardhtml(sboard).encode("ASCII"))
+				self.request.close()
 				return
 			sboard = AI1.play_9(sboard)
-			result = AI1.winner(sboard)
-			if result == "o":
-				sendfile(self,b"<html><p>O wins.</p></html>")
-				return
-			elif result == "x":
-				sendfile(self,b"<html><p>X wins.</p></html>")
-				return
-			elif result == "tie":
-				sendfile(self,b"<html><p>Tie</p></html>")
-				return
 
 			sendfile(self,boardhtml(sboard).encode("ASCII"))
-
 		else:
 			send404(self)
 		self.request.close()
 
-server_address = ('127.0.0.1',8003)
+server_address = ('127.0.0.1',8000)
 httpd = socketserver.TCPServer(server_address,echo)
 httpd.serve_forever()
 
