@@ -43,15 +43,19 @@ def boardhtml(board):
 	inner = ""
 	i=0
 	for square in board:
+		sq_disabled= False
+
 		if i%3==0:
 			inner+="<my-lin>"
 		if square == 'x':
 			content = x
+			sq_disabled=True
 		elif square == 'o':
 			content = o
+			sq_disabled=True
 		else:
 			content = ""
-		inner+=sq_template(board,str(i),content,disabled)
+		inner+=sq_template(board,str(i),content,disabled or sq_disabled)
 		if i%3==2:
 			inner+="</my-lin>"
 		i+=1
