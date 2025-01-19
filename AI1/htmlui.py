@@ -92,7 +92,7 @@ class echo(socketserver.BaseRequestHandler):
 		path = inp[4:4+space2i]
 		
 		def sendfile(self,bytes,cache=False):
-			controlcache = b"\r\nControl-Cache: max-age=604800" if cache==True else b""
+			controlcache = b"\r\nCache-Control:max-age=31536000,immutable" if cache==True else b""
 			l = len(bytes)
 			self.request.sendall(b"HTTP1.1 200 \r\nContent-Length:"+str(l).encode("ASCII")+controlcache+b"\r\n\r\n"+bytes)
 			self.request.close()
@@ -104,7 +104,7 @@ class echo(socketserver.BaseRequestHandler):
 		elif path == b"/x.bmp":
 			sendfile(self,ximg,cache=True)
 		elif path == b"/" or path == b"index" or path == b"/index.html":
-			sendfile(self,boardhtml("_________").encode("ASCII"))
+			sendfile(self,boardhtml("_________").encode("ASCII"),cache=True)
 
 		elif path[:2] == b"/b":
 			sboard = path[2:-1].decode("ASCII")
