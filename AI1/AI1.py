@@ -56,7 +56,8 @@ def winner(board):
 def play_3(board):
 	moves = legal_moves(board)
 	for move in moves:
-		if winner(newboard:=make_move(board,move)):
+		newboard=make_move(board,move)
+		if winner(newboard):
 			return newboard
 	return play_2(board)
 
@@ -64,15 +65,13 @@ def play_4(board):
 	moves = legal_moves(board)
 	turn_piece = turn(board)
 	other_turn_piece = "o" if turn_piece == "x" else "x"
-	print("piece, other turn piece",turn_piece,other_turn_piece)
 	for move in moves:
-		if winner(newboard:=make_move(board,move,turn_piece)):
+		newboard=make_move(board,move,turn_piece))
+		if winner(newboard):
 			return newboard
-	print("no winning move found")
 	for move in moves:
 		if winner(make_move(board,move,other_turn_piece)):
 			return make_move(board,move,turn_piece)
-	print("no immediate risk found")
 	return play_2(board)
 
 
@@ -88,7 +87,7 @@ def play_5(board):
 	their_ties = []
 	for move in legal_moves(board):
 		newboard=make_move(board,move)
-		if winner(newboard:=make_move(board,move)): #if we can win the game
+		if winner(newboard): #if we can win the game
 			return newboard #win it
 		elif tie(newboard): #if we can tie it
 			ties.append(newboard) #save option for later
@@ -112,7 +111,8 @@ def play_5(board):
 def play_5b(board): #->gamestate
 	moves = legal_moves(board) #at the end of the day, we want to chose one of these
 	for move in moves:
-		if winner(newboard:=make_move(board,move)) or tie(newboard): #if we can win the game or tie it
+		newboard=make_move(board,move)
+		if winner(newboard) or tie(newboard): #if we can win the game or tie it
 			return newboard #do it
 	goodmoves = []
 	for move in moves:
@@ -192,7 +192,8 @@ def play_9(board):
 	other_turn_piece = "o" if turn_piece == "x" else "x"
 	print("piece, other turn piece",turn_piece,other_turn_piece)
 	for move in moves:
-		if winner(newboard:=make_move(board,move,turn_piece)):
+		newboard=make_move(board,move,turn_piece)
+		if winner(newboard):
 			return newboard
 	print("no winning move found")
 	for move in moves:
