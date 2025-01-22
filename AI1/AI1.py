@@ -66,7 +66,7 @@ def play_4(board):
 	turn_piece = turn(board)
 	other_turn_piece = "o" if turn_piece == "x" else "x"
 	for move in moves:
-		newboard=make_move(board,move,turn_piece))
+		newboard=make_move(board,move,turn_piece)
 		if winner(newboard):
 			return newboard
 	for move in moves:
