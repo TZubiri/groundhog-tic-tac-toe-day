@@ -108,7 +108,7 @@ class echo(socketserver.BaseRequestHandler):
 		elif path == b"/x.bmp":
 			sendfile(self,ximg,cache=True)
 		elif path == b"/" or path == b"index" or path == b"/index.html":
-			sendfile(self,boardhtml("_________").encode("ASCII"),cache=True)
+			sendfile(self,boardhtml("_________").encode("ASCII"),cache=False)
 
 		elif path[:2] == b"/b":
 			sboard = path[2:-1].decode("ASCII")
