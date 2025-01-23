@@ -1,5 +1,6 @@
 import socketserver
 import AI1
+from datetime import datetime
 
 board = "x___o____"
 
@@ -98,7 +99,14 @@ class echo(socketserver.BaseRequestHandler):
 		def sendfile(self,bytes,cache=False):
 			controlcache = b"\r\nCache-Control:max-age=31536000,immutable" if cache==True else b""
 			l = len(bytes)
-			self.request.sendall(b"HTTP1.1 200 \r\nContent-Length:"+str(l).encode("ASCII")+controlcache+b"\r\n\r\n"+bytes)
+
+			# Get the current time or any specific datetime
+			now = datetime.utcnow()
+
+			# Format the date in RFC 1123 format
+			formatted_date = now.strftime("%a, %d %b %Y %H:%M:%S GMT").encode("ASCII")
+
+			self.request.sendall(b"HTTP1.1 200 \r\nContent-Type:text/html;charset=UTF-8\r\nContent-Length:"+str(l).encode("ASCII")+controlcache+b"\r\nDate:"+formatted_date+b"\r\n\r\n"+bytes)
 			self.request.close()
 		print(path)
 		if path == b"/webui.css":
