@@ -84,10 +84,10 @@ class echo(socketserver.BaseRequestHandler):
 		inp = self.request.recv(17) #longest and typical request is "GET /b_________1 " 17 chars with the final space
 		print(inp)
 		if inp[0] != b"G"[0] and inp[3] != b" "[0]:
-			self.request.sendall("HTTP1.1 405\r\n".encode("ASCII"))
+			self.request.sendall("HTTP/1.1 405\r\n".encode("ASCII"))
 
 		def send404(self):
-			self.request.sendall("HTTP1.1 404\r\n".encode("ASCII"))
+			self.request.sendall("HTTP/1.1 404\r\n".encode("ASCII"))
 
 		if inp[4]!=b"/"[0]:
 			send404(self)
@@ -106,7 +106,7 @@ class echo(socketserver.BaseRequestHandler):
 			# Format the date in RFC 1123 format
 			formatted_date = now.strftime("%a, %d %b %Y %H:%M:%S GMT").encode("ASCII")
 
-			self.request.sendall(b"HTTP1.1 200 \r\nContent-Type:text/html;charset=UTF-8\r\nContent-Length:"+str(l).encode("ASCII")+controlcache+b"\r\nDate:"+formatted_date+b"\r\n\r\n"+bytes)
+			self.request.sendall(b"HTTP/1.1 200 \r\nContent-Type:text/html;charset=UTF-8\r\nContent-Length:"+str(l).encode("ASCII")+controlcache+b"\r\nDate:"+formatted_date+b"\r\n\r\n"+bytes)
 			self.request.close()
 		print(path)
 		if path == b"/webui.css":
