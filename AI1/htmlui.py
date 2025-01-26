@@ -14,14 +14,20 @@ def boardhtml(board):
 	x = "<img class='x' src='x.bmp'></img>"
 	o = "<img class='o' src='o.bmp'></img>"
 
+	playagain = "<a href='/'><button> Play Again? </button></a>"
+
 	if result == "o":
 		resulthtml = "<p style='size:32'>O wins</p>"
+		resulthtml+=playagain
 	elif result == "x":
 		resulthtml = "<p style='size:32'>X wins</p>"
+		resulthtml+=playagain
 	elif result == "tie":
 		resulthtml = "<p style='size:32'>TIE!</p>"
+		resulthtml+=playagain
 	else:
 		resulthtml = ""
+
 
 	if result == "":
 		disabled = False
