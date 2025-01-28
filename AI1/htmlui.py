@@ -11,19 +11,19 @@ def boardhtml(board):
 	linepre= "<my-lin>"
 	linepost= "</my-lin>"
 
-	x = "<img class='x' src='x.bmp'></img>"
-	o = "<img class='o' src='o.bmp'></img>"
+	x = "<div class='x' >X</div>"
+	o = "<div class='o' >O</div>"
 
-	playagain = "<a href='/'><button> Play Again? </button></a>"
+	playagain = "<div class='play-again'> <a href='/'><button> Play Again? </button></a></div>"
 
 	if result == "o":
-		resulthtml = "<p style='size:32'>O wins</p>"
+		resulthtml = "<p class='result-message' >O wins</p>"
 		resulthtml+=playagain
 	elif result == "x":
-		resulthtml = "<p style='size:32'>X wins</p>"
+		resulthtml = "<p class='result-message' >X wins</p>"
 		resulthtml+=playagain
 	elif result == "tie":
-		resulthtml = "<p style='size:32'>TIE!</p>"
+		resulthtml = "<p class='result-message' >TIE!</p>"
 		resulthtml+=playagain
 	else:
 		resulthtml = ""
