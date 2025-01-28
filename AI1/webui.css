@@ -1,7 +1,70 @@
-ttt{display:block;height:95%}
-my-lin{
-        display:block;
+/* General reset */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
 }
-.my-sq{display:inline-block;width:30vmin;height:30vmin;border:solid;aspect-ratio:1/1}
-.x{width:100%;height:100%;object-fit:contain}
-.o{width:100%;height:100%;object-fit:contain}
+
+ttt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+my-lin {
+  display: flex;
+}
+
+.my-sq {
+  width: 80px;
+  height: 80px;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eaeaea;
+  border: 2px solid #cccccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  text-decoration: none;
+}
+
+.my-sq:hover {
+  background-color: #d6d6d6;
+  transform: scale(1.05);
+}
+
+.my-sq img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+.x {
+  filter: hue-rotate(200deg);
+}
+
+o {
+  filter: hue-rotate(0deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .my-sq {
+    width: 60px;
+    height: 60px;
+  }
+
+  my-lin {
+    margin: 2px;
+  }
+}
