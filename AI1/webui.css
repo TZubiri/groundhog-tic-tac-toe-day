@@ -1,3 +1,5 @@
+
+
 /* General reset */
 body {
   margin: 0;
@@ -36,6 +38,9 @@ my-lin {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   text-decoration: none;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
 }
 
 .my-sq:hover {
@@ -43,18 +48,26 @@ my-lin {
   transform: scale(1.05);
 }
 
-.my-sq img {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
+.my-sq .x {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ff4d4d;
 }
 
-.x {
-  filter: hue-rotate(200deg);
-}
-
-o {
-  filter: hue-rotate(0deg);
+.my-sq .o {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4d94ff;
 }
 
 /* Responsive adjustments */
@@ -62,6 +75,7 @@ o {
   .my-sq {
     width: 60px;
     height: 60px;
+    font-size: 1.5rem;
   }
 
   my-lin {
